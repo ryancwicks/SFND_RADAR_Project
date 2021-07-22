@@ -5,7 +5,7 @@
 
 For my CA-CFAR processing, I decided to build a kernel that matched the structure discussed in the course notes and perform at 2D convolution with the reshaped signal to generate a noise threshold array. This was done because the implentation was straightforward, and the efficiency is likely to be higher than any naive hand coded implementation. The reason for this likely improvement in efficiency is the conv2 programmers have optimized the code already, and might use different methods to improve the performance depending on the size of the kernel. Furthermore, the use of a continuous kernel rather than a set of conditionals to determine guard or training cells allows to compiler more opportunities to prefetch data and instructions.
 
-To create my CA-CFAR kernel, I created an array of zeroes of size (2*Tr + 2*Gr + 1, 2*Td + 2*Gd + 1) and set each value to 1/Nt, where Nt is the total number of training cells, which is (2*Tr + 2*Gr + 1)*(2*Td + 2*Gd + 1) - (2*Gr + 1)*(2*Gd + 1). I then set the central square of guard cells to 0 to create the guard section. 
+To create my CA-CFAR kernel, I created an array of zeroes of size (2*Tr + 2*Gr + 1, 2*Td + 2*Gd + 1) and set each value to 1/Nt, where Nt is the total number of training cells, which is (2*Tr + 2*Gr + 1)*(2*Td + 2*Gd + 1) - (2*Gr + 1)*(2*Gd + 1). I then set the central square of guard cells and the cell under test to 0 to create the guard section. 
 
 Applying the kernel to the data was a simple matter of running the conv2 function with the "same" parameter to produce the same size output as the input data array.
 
